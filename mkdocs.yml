@@ -1,0 +1,31 @@
+site_name: My Docs
+site_url: https://yulo_cs_note.github.io
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - content.code.copy
+    - toc.integrate
+  palette:
+    - scheme: default
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - def_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.critic
+
+nav:
+  - Home: index.md
