@@ -1,5 +1,6 @@
 site_name: My Docs
-site_url: https://yulo_cs_note.github.io
+site_url: https://yuloxx.github.io/yulo-cs-note/
+
 theme:
   name: material
   language: en
