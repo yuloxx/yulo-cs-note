@@ -8,29 +8,29 @@
       
       
       
-        <link rel="canonical" href="https://yuloxx.github.io/yulo-cs-note/">
+        <link rel="canonical" href="https://yuloxx.github.io/yulo-cs-note/big-data/zookeeper/">
       
       
+        <link rel="prev" href="../..">
       
-        <link rel="next" href="big-data/zookeeper/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
       
-        <title>My Docs</title>
+        <title>Zookeeper - My Docs</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -49,7 +49,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-yulo-cs-note" class="md-skip">
+        <a href="#zookeeper" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +88,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+    <a href="../.." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Zookeeper
             
           </span>
         </div>
@@ -191,11 +191,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -212,11 +210,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="big-data/zookeeper/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -252,7 +252,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+    <a href="../.." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -265,6 +265,88 @@
     
       
       
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
     
@@ -286,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Home
+    Zookeeper
   
 
     
@@ -297,14 +379,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="." class="md-nav__link md-nav__link--active">
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Home
+    Zookeeper
   
 
     
@@ -330,10 +412,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#aim" class="md-nav__link">
+  <a href="#what-is-zookeeper" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Aim
+        What is ZooKeeper?
       
     </span>
   </a>
@@ -341,21 +423,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#content" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Content
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#repository" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repository
+        Quick Start
       
     </span>
   </a>
@@ -366,83 +437,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Big Data
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Big Data
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="big-data/zookeeper/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Zookeeper
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -472,20 +466,67 @@
 
 
 
-<h1 id="welcome-to-yulo-cs-note">Welcome to yulo-cs-note</h1>
-<h2 id="aim">Aim</h2>
-<p><strong>yulo-cs-note</strong> is a collection of practical computer science knowledge. This site aims to provide quick guide, useful experiences for various computer technologies.</p>
-<h2 id="content">Content</h2>
+<h1 id="zookeeper">ZooKeeper</h1>
+<h2 id="what-is-zookeeper">What is ZooKeeper?</h2>
+<p><a href="https://zookeeper.apache.org">ZooKeeper</a> is a reliable distributed service for coordination, which help nodes share consistent configurations, metadata and status. </p>
+<p>Most Important Functions:</p>
 <ul>
-<li>computer science</li>
-<li>program languages</li>
-<li>database</li>
-<li>cloud services</li>
-<li>useful tools</li>
-<li>ML &amp;&amp; AI</li>
+<li>Configuration Management</li>
+<li>Metadata storage</li>
+<li>Event Listenser</li>
+<li>Leader Election</li>
 </ul>
-<h2 id="repository">Repository</h2>
-<p>You can explore the full source and contribute on GitHub:   <a href="https://github.com/yuloxx/yulo-cs-note">yuloxx/yulo-cs-note</a></p>
+<h2 id="quick-start">Quick Start</h2>
+<p>Precondition: a linux machine with jdk available </p>
+<p>Download Page: <a href="https://zookeeper.apache.org/releases.html">Apache ZooKeeper</a></p>
+<p>First, start a stand-alone zookeeper service</p>
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-xzvf<span class="w"> </span>apache-zookeeper-x.y.z-bin.tar.gz
+
+<span class="c1"># Enter the root directory</span>
+<span class="nb">cd</span><span class="w"> </span>apache-zookeeper-x.y.z-bin
+
+<span class="c1"># Create a config file</span>
+<span class="c1"># Default configuration: </span>
+<span class="c1"># tickTime=2000</span>
+<span class="c1"># dataDir=/tmp/zookeeper</span>
+<span class="c1"># clientPort=2181</span>
+cp<span class="w"> </span>conf/zoo_sample.cfg<span class="w"> </span>conf/zoo.cfg
+
+<span class="c1"># Start Server</span>
+<span class="c1"># If success, we will see:</span>
+<span class="c1"># ZooKeeper JMX enabled by default</span>
+<span class="c1"># Using config: zookeeper-path/bin/../conf/zoo.cfg</span>
+<span class="c1"># Starting zookeeper ... STARTED</span>
+bin/zkServer.sh<span class="w"> </span>start
+
+<span class="c1"># Check server status</span>
+<span class="c1"># If server works well, we will see:</span>
+<span class="c1"># Using config: zookeeper-path/bin/../conf/zoo.cfg</span>
+<span class="c1"># Client port found: 2181. Client address: localhost. Client SSL: false.</span>
+<span class="c1"># Mode: standalone</span>
+bin/zkServer.sh<span class="w"> </span>status
+
+
+<span class="c1"># Stop server</span>
+<span class="c1"># </span>
+bin/zkServer.sh<span class="w"> </span>stop
+</code></pre></div>
+<p>Second, read or write some data(persistent node)</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># show znodes of a path</span>
+ls<span class="w"> </span>/
+
+<span class="c1"># create a znode</span>
+create<span class="w"> </span>/node1<span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+
+<span class="c1"># read node data</span>
+get<span class="w"> </span>/node1
+
+<span class="c1"># set node data</span>
+<span class="nb">set</span><span class="w"> </span>/node1<span class="w"> </span><span class="s2">&quot;hello,zk&quot;</span>
+
+<span class="c1"># delete node data </span>
+deleteall<span class="w"> </span>/node1
+</code></pre></div>
 
 
 
@@ -541,10 +582,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "content.code.copy", "toc.integrate"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
     
   </body>
