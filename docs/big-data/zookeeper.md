@@ -133,3 +133,49 @@ create -e -s /lock/node "A"
 
 More than one client create ephemeral sequential znode in the same path. Client with the smallest sequential number gets the lock or wins the election.
 
+## Watcher
+
+Watcher provide a light weight mechanism to notify data change. Watching events include:
+
+- children znode change
+- znode data change
+- znode delete
+
+Test:
+
+Open a connection by zkCli.sh in session S1.
+
+```sh
+zkCli.sh -server localhost:2181
+create /watch_example "initial_data"
+```
+
+Open another connection by zkCli.sh in session S2.
+
+```sh
+zkCli.sh -server localhost:2181
+get -w /watch_example
+```
+
+Update the data in session S1
+
+```sh 
+set /watch_example "updated_data"
+```
+
+output in S2:
+
+```
+[zk: localhost:2181(CONNECTED) 0] get -w /watch_example
+initial_data
+[zk: localhost:2181(CONNECTED) 1]
+WATCHER::
+
+WatchedEvent state:SyncConnected type:NodeDataChanged path:/watch_example zxid: 4
+
+```
+
+Notice:
+
+Watcher takes effects **only once**. Once triggered, following events will not be notified.  To keep watch a znode, it's necessary to register again.
+
