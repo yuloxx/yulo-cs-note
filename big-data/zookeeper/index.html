@@ -433,6 +433,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#znode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZNode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#watcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watcher
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -527,6 +549,69 @@ get<span class="w"> </span>/node1
 <span class="c1"># delete node data </span>
 deleteall<span class="w"> </span>/node1
 </code></pre></div>
+<h2 id="znode">ZNode</h2>
+<p>Zookeeper maintains a tree directory data structure similar to file system.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code>/
+├── app
+│   ├── config
+│   ├── leader
+│   └── workers
+└── locks
+</code></pre></div>
+<p><strong>Znode Data</strong>:</p>
+<ul>
+<li>Data in bytes (no more than 1MB)</li>
+<li>Child nodes (not ephemeral)</li>
+<li>Stat data (version, timestamp)</li>
+</ul>
+<p><strong>Znode Type</strong>:</p>
+<p>Persistent Znode exists even if restarted or session lost, which is designed for configuration.</p>
+<div class="highlight"><pre><span></span><code>create<span class="w"> </span>/app/config<span class="w"> </span><span class="s2">&quot;db=localhost&quot;</span>
+</code></pre></div>
+<p>Ephemeral Znode disappear as session lost,  (There is mo children Znode in Ephemeral Znode) which is designed for service registration/heart beat/online status.</p>
+<div class="highlight"><pre><span></span><code>create<span class="w"> </span>-e<span class="w"> </span>/workers/worker-A<span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span>
+</code></pre></div>
+<p>Persistent Sequential Znode is used for distributed lock.</p>
+<div class="highlight"><pre><span></span><code>create<span class="w"> </span>-s<span class="w"> </span>/queue/job<span class="w"> </span><span class="s2">&quot;task1&quot;</span>
+</code></pre></div>
+<p>result:</p>
+<div class="highlight"><pre><span></span><code>/queue
+  └── job0000000001   (Persistent Sequential)
+</code></pre></div>
+<p>Ephemeral Sequential Znode  is used for distributed lock or leader election.</p>
+<div class="highlight"><pre><span></span><code>create<span class="w"> </span>-e<span class="w"> </span>-s<span class="w"> </span>/lock/node<span class="w"> </span><span class="s2">&quot;A&quot;</span>
+</code></pre></div>
+<p>More than one client create ephemeral sequential znode in the same path. Client with the smallest sequential number gets the lock or wins the election.</p>
+<h2 id="watcher">Watcher</h2>
+<p>Watcher provide a light weight mechanism to notify data change. Watching events include:</p>
+<ul>
+<li>children znode change</li>
+<li>znode data change</li>
+<li>znode delete</li>
+</ul>
+<p>Test:</p>
+<p>Open a connection by zkCli.sh in session S1.</p>
+<div class="highlight"><pre><span></span><code>zkCli.sh<span class="w"> </span>-server<span class="w"> </span>localhost:2181
+create<span class="w"> </span>/watch_example<span class="w"> </span><span class="s2">&quot;initial_data&quot;</span>
+</code></pre></div>
+<p>Open another connection by zkCli.sh in session S2.</p>
+<div class="highlight"><pre><span></span><code>zkCli.sh<span class="w"> </span>-server<span class="w"> </span>localhost:2181
+get<span class="w"> </span>-w<span class="w"> </span>/watch_example
+</code></pre></div>
+<p>Update the data in session S1</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>/watch_example<span class="w"> </span><span class="s2">&quot;updated_data&quot;</span>
+</code></pre></div>
+<p>output in S2:</p>
+<div class="highlight"><pre><span></span><code>[zk: localhost:2181(CONNECTED) 0] get -w /watch_example
+initial_data
+[zk: localhost:2181(CONNECTED) 1]
+WATCHER::
+
+WatchedEvent state:SyncConnected type:NodeDataChanged path:/watch_example zxid: 4
+</code></pre></div>
+<p>Notice:</p>
+<p>Watcher takes effects <strong>only once</strong>. Once triggered, following events will not be notified.  To keep watch a znode, it's necessary to register again.</p>
 
 
 
