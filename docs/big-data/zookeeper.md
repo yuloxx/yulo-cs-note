@@ -74,3 +74,62 @@ set /node1 "hello,zk"
 deleteall /node1
 ```
 
+
+
+## ZNode
+
+Zookeeper maintains a tree directory data structure similar to file system.
+
+For example:
+
+```
+/
+├── app
+│   ├── config
+│   ├── leader
+│   └── workers
+└── locks
+
+```
+
+**Znode Data**:
+
+- Data in bytes (no more than 1MB)
+- Child nodes (not ephemeral)
+- Stat data (version, timestamp)
+
+**Znode Type**:
+
+Persistent Znode exists even if restarted or session lost, which is designed for configuration.
+
+```sh
+create /app/config "db=localhost"
+```
+
+Ephemeral Znode disappear as session lost,  (There is mo children Znode in Ephemeral Znode) which is designed for service registration/heart beat/online status.
+
+```sh
+create -e /workers/worker-A "10.0.0.1"
+```
+
+Persistent Sequential Znode is used for distributed lock.
+
+``` sh
+create -s /queue/job "task1"
+```
+
+result:
+
+```
+/queue
+  └── job0000000001   (Persistent Sequential)
+```
+
+Ephemeral Sequential Znode  is used for distributed lock or leader election.
+
+```sh
+create -e -s /lock/node "A"
+```
+
+More than one client create ephemeral sequential znode in the same path. Client with the smallest sequential number gets the lock or wins the election.
+
