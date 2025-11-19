@@ -179,3 +179,297 @@ Notice:
 
 Watcher takes effects **only once**. Once triggered, following events will not be notified.  To keep watch a znode, it's necessary to register again.
 
+
+
+## Leader Election
+
+Zookeeper provide a reliable and simple way for leader election: create ephemeral sequential and elect the instance with least sequence number.
+
+Every instance of an application attempt to  create sequential znode under the election directory. The instance with the least sequential number is elected as the leader. 
+
+```
+/myapp/leader/instance-0000000001
+/myapp/leader/instance-0000000002
+/myapp/leader/instance-0000000003
+...
+```
+
+Every instance watch the election znode directory. As the leader fails, sequential znode is removed, then election is triggered.
+
+
+
+Example Project:
+
+This project shows how to start a LeaderElection thread and work with business thread through a global state service. Maven package this project and run jar package to observe leader election process! 
+
+```
++---main
+|   +---java
+|   |   \---org
+|   |       \---example
+|   |               Application.java
+|   |               CuratorConfig.java
+|   |               LeaderController.java
+|   |               LeaderElectionService.java
+|   |               LeaderStateService.java
+|   |
+|   \---resources
+|           application.yml
+|
+pom.xml
+```
+
+pom.xml:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>my-spring</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.7.6</spring-boot.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+application.yml:
+
+```yml
+zookeeper:
+  connect-string: "a.b.c.d:xxxx"
+
+```
+
+Application
+
+```java
+package org.example;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+```
+
+CuratorConfig
+
+```java
+package org.example;
+
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class CuratorConfig {
+
+    @Value("${zookeeper.connect-string}")
+    private String connectString;
+
+    @Bean(initMethod = "start")
+    public CuratorFramework curatorFramework() {
+        return CuratorFrameworkFactory.builder()
+                .connectString(connectString)
+                .sessionTimeoutMs(60000)
+                .connectionTimeoutMs(15000)
+                .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                .build();
+    }
+
+}
+
+```
+
+LeaderElectionService
+
+```java
+package org.example;
+
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.leader.LeaderSelector;
+import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
+
+@Service
+public class LeaderElectionService {
+
+    private static final String LEADER_PATH = "/demo-app/leader_election";
+
+    private static final Logger log = LoggerFactory.getLogger(LeaderElectionService.class);
+
+    @Resource
+    private CuratorFramework client;
+
+    @Resource
+    private LeaderStateService leaderStateService;
+
+    private LeaderSelector leaderSelector;
+
+    @PostConstruct
+    public void start() {
+        leaderSelector = new LeaderSelector(client, LEADER_PATH, new LeaderSelectorListenerAdapter() {
+
+            @Override
+            public void takeLeadership(CuratorFramework curatorFramework) throws Exception {
+                log.info("I'm leader now");
+                leaderStateService.setLeader(true);
+
+                try {
+                    Thread.sleep(Long.MAX_VALUE);
+                } finally {
+                    leaderStateService.setLeader(false);
+                    log.info("I am no longer Leader.");
+                }
+            }
+        });
+        leaderSelector.autoRequeue();
+        leaderSelector.start();
+        log.info("Leader election started.");
+    }
+
+    @PreDestroy
+    public void stop() {
+        if (leaderSelector != null) {
+            leaderSelector.close();
+        }
+    }
+
+}
+
+```
+
+
+
+LeaderStateService
+
+```java
+package org.example;
+
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+@Component
+public class LeaderStateService {
+    private final AtomicBoolean isLeader = new AtomicBoolean(false);
+
+    public boolean isLeader() {
+        return isLeader.get();
+    }
+
+    public void setLeader(boolean leader) {
+        isLeader.set(leader);
+    }
+}
+
+```
+
+
+
+LeaderController
+
+```java
+package org.example;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+public class LeaderController {
+
+    @Resource
+    private LeaderStateService leaderStateService;
+
+    @GetMapping("/isLeader")
+    public String isLeader() {
+        return leaderStateService.isLeader() ? "YES, I am leader" : "NO, I am follower";
+    }
+}
+
+```
+
+
+
