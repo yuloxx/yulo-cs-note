@@ -15,9 +15,46 @@ Elasticsearch is a open-source search and analytics engine. It can quickly searc
 
 
 
+## Quick Start
+
+Prerequisites: a Linux machine with JDK installed
+
+Download Page: [Download Elasticsearch | Elastic](https://www.elastic.co/cn/downloads/elasticsearch)
+
+First, start a standalone Elasticsearch service:
+
+```sh
+tar -xzvf elasticsearch-7.16.0-linux-x86_64.tar.gz
+cd elasticsearch-7.16.0
+
+# Optional
+vim config/elasticsearch.yml
+
+# start background
+nohup bin/elasticsearch > elasticsearch.log 2>&1 &
+```
 
 
-## Basic API
+
+Install Kibana(Optional)
+
+Kibana Functions:
+
+- Data Visualization
+- Dev Tools (Console Query)
+- Elasticsearch Management
+
+```
+tar -xzvf kibana-7.16.0-linux-x86_64.tar.gz
+cd kibana-7.16.0-linux-x86_64
+
+# server.host: "0.0.0.0"
+# elasticsearch.hosts: ["http://localhost:9200"]
+vim config/kibana.yml
+
+# Run kibana background
+nohup bin/kibana > kibana.log 2>&1 &
+```
 
 **Test Connection:**
 
@@ -45,6 +82,10 @@ Response:
 }
 ```
 
+
+
+## Index & Document APIs
+
 **Create Index:**
 
 PUT /{indexName}
@@ -55,7 +96,7 @@ Request:
 {
   "settings": {
     "number_of_shards": 1,
-    "number_of_replicas": 1
+    "number_of_replicas": 0
   },
   "mappings": {
     "properties": {
@@ -73,31 +114,9 @@ Request:
 }
 ```
 
-Response: 
-
-```json
-{
-    "acknowledged": true,
-    "shards_acknowledged": true,
-    "index": "article"
-}
-```
-
-
-
 **Delete Index:**
 
 DELETE /{indexName}
-
-Response:
-
-```json
-{
-    "acknowledged": true
-}
-```
-
-
 
 **Create Doc:** 
 
@@ -115,125 +134,128 @@ Request:
 }
 ```
 
-Response:
-
-```json
-{
-    "_index": "article",
-    "_type": "_doc",
-    "_id": "ExPPoZoBi-z4cJUvnLco",
-    "_version": 1,
-    "result": "created",
-    "_shards": {
-        "total": 2,
-        "successful": 1,
-        "failed": 0
-    },
-    "_seq_no": 0,
-    "_primary_term": 1
-}
-```
-
-
-
-Get Doc:
+**Get Doc:**
 
 GET /{indexName}/_doc/{id}
 
-Response:
-
-```json
-{
-    "_index": "article",
-    "_type": "_doc",
-    "_id": "ExPPoZoBi-z4cJUvnLco",
-    "_version": 1,
-    "_seq_no": 0,
-    "_primary_term": 1,
-    "found": true,
-    "_source": {
-        "title": "Elasticsearch Tutorial",
-        "content": "This is a tutorial about Elasticsearch",
-        "tags": [
-            "search",
-            "database"
-        ],
-        "created_at": "2024-01-01",
-        "views": 100
-    }
-}
-```
 
 
-
-
-
-Search All Doc:
+## Search API
 
 GET /{indexName}/_search
 
-Request:
+Support Operation:
 
-```json
+**match** 
+
+go through tokenizer for text, not for keyword/number/date.
+
+```
+GET INDEX_NAME/_search
 {
-    "size": 10,
-    "query": {
-        "match_all": {}
+  "query": {
+    "match": {
+      "FIELD_NAME": "apple"
     }
+  }
+}
+
+```
+
+**term**
+
+suitable for non-tokenized keyword field or number field.
+
+```
+GET INDEX_NAME/_search
+{
+  "query": {
+    "term": {
+      "FIELD_NAME": "success"
+    }
+  }
 }
 ```
 
-Request:
+**range**
 
-```json
+``` 
+GET INDEX_NAME/_search
 {
-    "query": {
-        "match": {
-            "title": "Elasticsearch"
-        }
+  "query": {
+    "range": {
+      "FIELD_NAME": {
+        "gte": 100,
+        "lte": 500
+      }
     }
+  }
+}
+
+```
+
+**bool**
+
+- must
+- should (effect score)
+- must_not
+- filter
+
+```
+GET INDEX_NAME/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "title": "apple" } }
+      ],
+      "filter": [
+        { "range": { "price": { "lt": 100 } } }
+      ],
+      "must_not": [
+        { "term": { "condition": "refurbished" } }
+      ]
+    }
+  }
 }
 ```
 
 
 
-Response:
+**sort**
 
-```json
-{
-    "took": 11,
-    "timed_out": false,
-    "_shards": {
-        "total": 1,
-        "successful": 1,
-        "skipped": 0,
-        "failed": 0
-    },
-    "hits": {
-        "total": {
-            "value": 1,
-            "relation": "eq"
-        },
-        "max_score": 1.0,
-        "hits": [
-            {
-                "_index": "article",
-                "_type": "_doc",
-                "_id": "ExPPoZoBi-z4cJUvnLco",
-                "_score": 1.0,
-                "_source": {
-                    "title": "Elasticsearch Tutorial",
-                    "content": "This is a tutorial about Elasticsearch",
-                    "tags": [
-                        "search",
-                        "database"
-                    ],
-                    "created_at": "2024-01-01",
-                    "views": 100
-                }
-            }
-        ]
-    }
-}
+For number/date/keyword
+
 ```
+"sort": [
+  { "price": "asc" }
+]
+```
+
+
+
+
+
+**size**
+For paging.
+
+```
+GET INDEX_NAME/_search
+{
+  "size": 10
+}
+
+```
+
+
+
+
+
+## Cat API
+
+
+
+
+
+## Index Management API
 

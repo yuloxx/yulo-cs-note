@@ -30,3 +30,5 @@ nav:
   - Home: index.md
   - Big Data:
     - Zookeeper: big-data/zookeeper.md
+  - Cloud Service:
+    - Elasticsearch: cloud-service/elasticsearch.md
