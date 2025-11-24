@@ -2,24 +2,24 @@
 
 ## What is ZooKeeper?
 
-[ZooKeeper](https://zookeeper.apache.org) is a reliable distributed service for coordination, which help nodes share consistent configurations, metadata and status. 
+[ZooKeeper](https://zookeeper.apache.org) is a reliable distributed coordination service that helps nodes maintain consistent configurations, metadata, and state information.
 
-Most Important Functions:
+Key Functions:
 
 - Configuration Management
-- Metadata storage
-- Event Listenser
+- Metadata Storage
+- Event Listeners
 - Leader Election
 
 
 
 ## Quick Start
 
-Precondition: a linux machine with jdk available 
+Prerequisites: a Linux machine with JDK installed
 
 Download Page: [Apache ZooKeeper](https://zookeeper.apache.org/releases.html)
 
-First, start a stand-alone zookeeper service
+First, start a standalone ZooKeeper service:
 
 ```sh
 tar -xzvf apache-zookeeper-x.y.z-bin.tar.gz
@@ -55,7 +55,7 @@ bin/zkServer.sh stop
 
 ```
 
-Second, read or write some data(persistent node)
+Next, perform basic data operations (persistent node):
 
 ```sh
 # show znodes of a path
@@ -78,9 +78,9 @@ deleteall /node1
 
 ## ZNode
 
-Zookeeper maintains a tree directory data structure similar to file system.
+ZooKeeper maintains a tree-like directory structure similar to a file system.
 
-For example:
+Example:
 
 ```
 /
@@ -94,76 +94,76 @@ For example:
 
 **Znode Data**:
 
-- Data in bytes (no more than 1MB)
-- Child nodes (not ephemeral)
-- Stat data (version, timestamp)
+- Byte array data (maximum 1MB)
+- Child nodes (excluding ephemeral nodes)
+- Statistical data (version, timestamp)
 
-**Znode Type**:
+**Znode Types**:
 
-Persistent Znode exists even if restarted or session lost, which is designed for configuration.
+Persistent Znode: Remains intact after restarts or session expiration, suitable for configuration storage.
 
 ```sh
 create /app/config "db=localhost"
 ```
 
-Ephemeral Znode disappear as session lost,  (There is mo children Znode in Ephemeral Znode) which is designed for service registration/heart beat/online status.
+Ephemeral Znode: Automatically deleted when the session ends (cannot have child nodes), ideal for service registration, heartbeats, and online status.
 
 ```sh
 create -e /workers/worker-A "10.0.0.1"
 ```
 
-Persistent Sequential Znode is used for distributed lock.
+Persistent Sequential Znode: Used for distributed locks.
 
 ``` sh
 create -s /queue/job "task1"
 ```
 
-result:
+Result:
 
 ```
 /queue
   └── job0000000001   (Persistent Sequential)
 ```
 
-Ephemeral Sequential Znode  is used for distributed lock or leader election.
+Ephemeral Sequential Znode: Used for distributed locks or leader election.
 
 ```sh
 create -e -s /lock/node "A"
 ```
 
-More than one client create ephemeral sequential znode in the same path. Client with the smallest sequential number gets the lock or wins the election.
+When multiple clients create ephemeral sequential znodes under the same path, the client with the smallest sequence number acquires the lock or wins the election.
 
 ## Watcher
 
-Watcher provide a light weight mechanism to notify data change. Watching events include:
+Watchers provide a lightweight mechanism for notifying data changes. Supported events include:
 
-- children znode change
-- znode data change
-- znode delete
+- Child znode changes
+- Znode data modifications
+- Znode deletion
 
-Test:
+Demonstration:
 
-Open a connection by zkCli.sh in session S1.
+Open a connection using zkCli.sh in session S1:
 
 ```sh
 zkCli.sh -server localhost:2181
 create /watch_example "initial_data"
 ```
 
-Open another connection by zkCli.sh in session S2.
+Open another connection using zkCli.sh in session S2:
 
 ```sh
 zkCli.sh -server localhost:2181
 get -w /watch_example
 ```
 
-Update the data in session S1
+Update the data in session S1:
 
 ```sh 
 set /watch_example "updated_data"
 ```
 
-output in S2:
+Output in S2:
 
 ```
 [zk: localhost:2181(CONNECTED) 0] get -w /watch_example
@@ -175,17 +175,15 @@ WatchedEvent state:SyncConnected type:NodeDataChanged path:/watch_example zxid: 
 
 ```
 
-Notice:
-
-Watcher takes effects **only once**. Once triggered, following events will not be notified.  To keep watch a znode, it's necessary to register again.
+Note: Watchers are **one-time triggers**. After being triggered, subsequent events will not be notified. To continue monitoring a znode, you must re-register the watcher.
 
 
 
 ## Leader Election
 
-Zookeeper provide a reliable and simple way for leader election: create ephemeral sequential and elect the instance with least sequence number.
+ZooKeeper offers a reliable and straightforward method for leader election: create ephemeral sequential nodes and elect the instance with the smallest sequence number.
 
-Every instance of an application attempt to  create sequential znode under the election directory. The instance with the least sequential number is elected as the leader. 
+Each application instance attempts to create a sequential znode under the election directory. The instance with the smallest sequence number becomes the leader.
 
 ```
 /myapp/leader/instance-0000000001
@@ -194,13 +192,13 @@ Every instance of an application attempt to  create sequential znode under the e
 ...
 ```
 
-Every instance watch the election znode directory. As the leader fails, sequential znode is removed, then election is triggered.
+Each instance monitors the election directory. If the leader fails, its sequential znode is removed, triggering a new election.
 
 
 
-Example Project:
+## Example Project
 
-This project shows how to start a LeaderElection thread and work with business thread through a global state service. Maven package this project and run jar package to observe leader election process! 
+This project demonstrates how to start a leader election thread and coordinate with business threads through a global state service. Package the project with Maven and run the JAR to observe the leader election process!
 
 ```
 +---main
@@ -305,7 +303,7 @@ zookeeper:
 
 ```
 
-Application
+Application.java:
 
 ```java
 package org.example;
@@ -323,7 +321,7 @@ public class Application {
 
 ```
 
-CuratorConfig
+CuratorConfig.java:
 
 ```java
 package org.example;
@@ -355,7 +353,7 @@ public class CuratorConfig {
 
 ```
 
-LeaderElectionService
+LeaderElectionService.java:
 
 ```java
 package org.example;
@@ -419,9 +417,7 @@ public class LeaderElectionService {
 
 ```
 
-
-
-LeaderStateService
+LeaderStateService.java:
 
 ```java
 package org.example;
@@ -445,9 +441,7 @@ public class LeaderStateService {
 
 ```
 
-
-
-LeaderController
+LeaderController.java:
 
 ```java
 package org.example;
