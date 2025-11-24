@@ -14,6 +14,8 @@
         <link rel="prev" href="../..">
       
       
+        <link rel="next" href="../../cloud-service/elasticsearch/">
+      
       
         
       
@@ -221,6 +223,26 @@
   
   
   Big Data
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cloud-service/elasticsearch/" class="md-tabs__link">
+          
+  
+  
+  Cloud Service
 
         </a>
       </li>
@@ -466,10 +488,106 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Project
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Service
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cloud Service
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud-service/elasticsearch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elasticsearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -501,18 +619,18 @@
 
 <h1 id="zookeeper">ZooKeeper</h1>
 <h2 id="what-is-zookeeper">What is ZooKeeper?</h2>
-<p><a href="https://zookeeper.apache.org">ZooKeeper</a> is a reliable distributed service for coordination, which help nodes share consistent configurations, metadata and status. </p>
-<p>Most Important Functions:</p>
+<p><a href="https://zookeeper.apache.org">ZooKeeper</a> is a reliable distributed coordination service that helps nodes maintain consistent configurations, metadata, and state information.</p>
+<p>Key Functions:</p>
 <ul>
 <li>Configuration Management</li>
-<li>Metadata storage</li>
-<li>Event Listenser</li>
+<li>Metadata Storage</li>
+<li>Event Listeners</li>
 <li>Leader Election</li>
 </ul>
 <h2 id="quick-start">Quick Start</h2>
-<p>Precondition: a linux machine with jdk available </p>
+<p>Prerequisites: a Linux machine with JDK installed</p>
 <p>Download Page: <a href="https://zookeeper.apache.org/releases.html">Apache ZooKeeper</a></p>
-<p>First, start a stand-alone zookeeper service</p>
+<p>First, start a standalone ZooKeeper service:</p>
 <div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-xzvf<span class="w"> </span>apache-zookeeper-x.y.z-bin.tar.gz
 
 <span class="c1"># Enter the root directory</span>
@@ -544,7 +662,7 @@ bin/zkServer.sh<span class="w"> </span>status
 <span class="c1"># </span>
 bin/zkServer.sh<span class="w"> </span>stop
 </code></pre></div>
-<p>Second, read or write some data(persistent node)</p>
+<p>Next, perform basic data operations (persistent node):</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># show znodes of a path</span>
 ls<span class="w"> </span>/
 
@@ -561,8 +679,8 @@ get<span class="w"> </span>/node1
 deleteall<span class="w"> </span>/node1
 </code></pre></div>
 <h2 id="znode">ZNode</h2>
-<p>Zookeeper maintains a tree directory data structure similar to file system.</p>
-<p>For example:</p>
+<p>ZooKeeper maintains a tree-like directory structure similar to a file system.</p>
+<p>Example:</p>
 <div class="highlight"><pre><span></span><code>/
 ├── app
 │   ├── config
@@ -572,48 +690,48 @@ deleteall<span class="w"> </span>/node1
 </code></pre></div>
 <p><strong>Znode Data</strong>:</p>
 <ul>
-<li>Data in bytes (no more than 1MB)</li>
-<li>Child nodes (not ephemeral)</li>
-<li>Stat data (version, timestamp)</li>
+<li>Byte array data (maximum 1MB)</li>
+<li>Child nodes (excluding ephemeral nodes)</li>
+<li>Statistical data (version, timestamp)</li>
 </ul>
-<p><strong>Znode Type</strong>:</p>
-<p>Persistent Znode exists even if restarted or session lost, which is designed for configuration.</p>
+<p><strong>Znode Types</strong>:</p>
+<p>Persistent Znode: Remains intact after restarts or session expiration, suitable for configuration storage.</p>
 <div class="highlight"><pre><span></span><code>create<span class="w"> </span>/app/config<span class="w"> </span><span class="s2">&quot;db=localhost&quot;</span>
 </code></pre></div>
-<p>Ephemeral Znode disappear as session lost,  (There is mo children Znode in Ephemeral Znode) which is designed for service registration/heart beat/online status.</p>
+<p>Ephemeral Znode: Automatically deleted when the session ends (cannot have child nodes), ideal for service registration, heartbeats, and online status.</p>
 <div class="highlight"><pre><span></span><code>create<span class="w"> </span>-e<span class="w"> </span>/workers/worker-A<span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span>
 </code></pre></div>
-<p>Persistent Sequential Znode is used for distributed lock.</p>
+<p>Persistent Sequential Znode: Used for distributed locks.</p>
 <div class="highlight"><pre><span></span><code>create<span class="w"> </span>-s<span class="w"> </span>/queue/job<span class="w"> </span><span class="s2">&quot;task1&quot;</span>
 </code></pre></div>
-<p>result:</p>
+<p>Result:</p>
 <div class="highlight"><pre><span></span><code>/queue
   └── job0000000001   (Persistent Sequential)
 </code></pre></div>
-<p>Ephemeral Sequential Znode  is used for distributed lock or leader election.</p>
+<p>Ephemeral Sequential Znode: Used for distributed locks or leader election.</p>
 <div class="highlight"><pre><span></span><code>create<span class="w"> </span>-e<span class="w"> </span>-s<span class="w"> </span>/lock/node<span class="w"> </span><span class="s2">&quot;A&quot;</span>
 </code></pre></div>
-<p>More than one client create ephemeral sequential znode in the same path. Client with the smallest sequential number gets the lock or wins the election.</p>
+<p>When multiple clients create ephemeral sequential znodes under the same path, the client with the smallest sequence number acquires the lock or wins the election.</p>
 <h2 id="watcher">Watcher</h2>
-<p>Watcher provide a light weight mechanism to notify data change. Watching events include:</p>
+<p>Watchers provide a lightweight mechanism for notifying data changes. Supported events include:</p>
 <ul>
-<li>children znode change</li>
-<li>znode data change</li>
-<li>znode delete</li>
+<li>Child znode changes</li>
+<li>Znode data modifications</li>
+<li>Znode deletion</li>
 </ul>
-<p>Test:</p>
-<p>Open a connection by zkCli.sh in session S1.</p>
+<p>Demonstration:</p>
+<p>Open a connection using zkCli.sh in session S1:</p>
 <div class="highlight"><pre><span></span><code>zkCli.sh<span class="w"> </span>-server<span class="w"> </span>localhost:2181
 create<span class="w"> </span>/watch_example<span class="w"> </span><span class="s2">&quot;initial_data&quot;</span>
 </code></pre></div>
-<p>Open another connection by zkCli.sh in session S2.</p>
+<p>Open another connection using zkCli.sh in session S2:</p>
 <div class="highlight"><pre><span></span><code>zkCli.sh<span class="w"> </span>-server<span class="w"> </span>localhost:2181
 get<span class="w"> </span>-w<span class="w"> </span>/watch_example
 </code></pre></div>
-<p>Update the data in session S1</p>
+<p>Update the data in session S1:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>/watch_example<span class="w"> </span><span class="s2">&quot;updated_data&quot;</span>
 </code></pre></div>
-<p>output in S2:</p>
+<p>Output in S2:</p>
 <div class="highlight"><pre><span></span><code>[zk: localhost:2181(CONNECTED) 0] get -w /watch_example
 initial_data
 [zk: localhost:2181(CONNECTED) 1]
@@ -621,19 +739,18 @@ WATCHER::
 
 WatchedEvent state:SyncConnected type:NodeDataChanged path:/watch_example zxid: 4
 </code></pre></div>
-<p>Notice:</p>
-<p>Watcher takes effects <strong>only once</strong>. Once triggered, following events will not be notified.  To keep watch a znode, it's necessary to register again.</p>
+<p>Note: Watchers are <strong>one-time triggers</strong>. After being triggered, subsequent events will not be notified. To continue monitoring a znode, you must re-register the watcher.</p>
 <h2 id="leader-election">Leader Election</h2>
-<p>Zookeeper provide a reliable and simple way for leader election: create ephemeral sequential and elect the instance with least sequence number.</p>
-<p>Every instance of an application attempt to  create sequential znode under the election directory. The instance with the least sequential number is elected as the leader. </p>
+<p>ZooKeeper offers a reliable and straightforward method for leader election: create ephemeral sequential nodes and elect the instance with the smallest sequence number.</p>
+<p>Each application instance attempts to create a sequential znode under the election directory. The instance with the smallest sequence number becomes the leader.</p>
 <div class="highlight"><pre><span></span><code>/myapp/leader/instance-0000000001
 /myapp/leader/instance-0000000002
 /myapp/leader/instance-0000000003
 ...
 </code></pre></div>
-<p>Every instance watch the election znode directory. As the leader fails, sequential znode is removed, then election is triggered.</p>
-<p>Example Project:</p>
-<p>This project shows how to start a LeaderElection thread and work with business thread through a global state service. Maven package this project and run jar package to observe leader election process! </p>
+<p>Each instance monitors the election directory. If the leader fails, its sequential znode is removed, triggering a new election.</p>
+<h2 id="example-project">Example Project</h2>
+<p>This project demonstrates how to start a leader election thread and coordinate with business threads through a global state service. Package the project with Maven and run the JAR to observe the leader election process!</p>
 <div class="highlight"><pre><span></span><code>+---main
 |   +---java
 |   |   \---org
@@ -728,7 +845,7 @@ pom.xml
 <div class="highlight"><pre><span></span><code>zookeeper:
   connect-string: &quot;a.b.c.d:xxxx&quot;
 </code></pre></div>
-<p>Application</p>
+<p>Application.java:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.SpringApplication</span><span class="p">;</span>
@@ -742,7 +859,7 @@ pom.xml
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>CuratorConfig</p>
+<p>CuratorConfig.java:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.curator.framework.CuratorFramework</span><span class="p">;</span>
@@ -770,7 +887,7 @@ pom.xml
 
 <span class="p">}</span>
 </code></pre></div>
-<p>LeaderElectionService</p>
+<p>LeaderElectionService.java:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.curator.framework.CuratorFramework</span><span class="p">;</span>
@@ -830,7 +947,7 @@ pom.xml
 
 <span class="p">}</span>
 </code></pre></div>
-<p>LeaderStateService</p>
+<p>LeaderStateService.java:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.stereotype.Component</span><span class="p">;</span>
@@ -850,7 +967,7 @@ pom.xml
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>LeaderController</p>
+<p>LeaderController.java:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="p">;</span>

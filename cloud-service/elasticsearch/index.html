@@ -11,6 +11,8 @@
         <link rel="canonical" href="https://yuloxx.github.io/yulo-cs-note/cloud-service/elasticsearch/">
       
       
+        <link rel="prev" href="../../big-data/zookeeper/">
+      
       
       
         
@@ -224,6 +226,28 @@
   
 
       
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Cloud Service
+
+        </a>
+      </li>
+    
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -371,6 +395,220 @@
   
 
     
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Service
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cloud Service
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elasticsearch
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elasticsearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-elasticsearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Elasticsearch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-document-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index &amp; Document APIs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cat-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cat API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-management-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Management API
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -401,6 +639,173 @@
 <p><strong>Shard</strong>: Elasticsearch subdivides an index into multiple pieces called shards.</p>
 </li>
 </ul>
+<h2 id="quick-start">Quick Start</h2>
+<p>Prerequisites: a Linux machine with JDK installed</p>
+<p>Download Page: <a href="https://www.elastic.co/cn/downloads/elasticsearch">Download Elasticsearch | Elastic</a></p>
+<p>First, start a standalone Elasticsearch service:</p>
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-xzvf<span class="w"> </span>elasticsearch-7.16.0-linux-x86_64.tar.gz
+<span class="nb">cd</span><span class="w"> </span>elasticsearch-7.16.0
+
+<span class="c1"># Optional</span>
+vim<span class="w"> </span>config/elasticsearch.yml
+
+<span class="c1"># start background</span>
+nohup<span class="w"> </span>bin/elasticsearch<span class="w"> </span>&gt;<span class="w"> </span>elasticsearch.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</code></pre></div>
+<p>Install Kibana(Optional)</p>
+<p>Kibana Functions:</p>
+<ul>
+<li>Data Visualization</li>
+<li>Dev Tools (Console Query)</li>
+<li>Elasticsearch Management</li>
+</ul>
+<div class="highlight"><pre><span></span><code>tar -xzvf kibana-7.16.0-linux-x86_64.tar.gz
+cd kibana-7.16.0-linux-x86_64
+
+# server.host: &quot;0.0.0.0&quot;
+# elasticsearch.hosts: [&quot;http://localhost:9200&quot;]
+vim config/kibana.yml
+
+# Run kibana background
+nohup bin/kibana &gt; kibana.log 2&gt;&amp;1 &amp;
+</code></pre></div>
+<p><strong>Test Connection:</strong></p>
+<p>GET /</p>
+<p>Response: </p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cluster_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;elasticsearch&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cluster_uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ZYjaWGqATmWXA4ndLUv5Zg&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7.16.0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;build_flavor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;build_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tar&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;build_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6fc81662312141fe7691d7c1c91b8658ac17aa0d&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;build_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2021-12-02T15:46:35.697268109Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;build_snapshot&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;lucene_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8.10.1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;minimum_wire_compatibility_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6.8.0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;minimum_index_compatibility_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6.0.0-beta1&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;tagline&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You Know, for Search&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="index-document-apis">Index &amp; Document APIs</h2>
+<p><strong>Create Index:</strong></p>
+<p>PUT /{indexName}</p>
+<p>Request: </p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;settings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;number_of_shards&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;number_of_replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;views&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Delete Index:</strong></p>
+<p>DELETE /{indexName}</p>
+<p><strong>Create Doc:</strong> </p>
+<p>POST /{indexName}/_doc</p>
+<p>Request:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elasticsearch Tutorial&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;This is a tutorial about Elasticsearch&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;search&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;database&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;views&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Get Doc:</strong></p>
+<p>GET /{indexName}/_doc/{id}</p>
+<h2 id="search-api">Search API</h2>
+<p>GET /{indexName}/_search</p>
+<p>Support Operation:</p>
+<p><strong>match</strong> </p>
+<p>go through tokenizer for text, not for keyword/number/date.</p>
+<div class="highlight"><pre><span></span><code>GET INDEX_NAME/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;FIELD_NAME&quot;: &quot;apple&quot;
+    }
+  }
+}
+</code></pre></div>
+<p><strong>term</strong></p>
+<p>suitable for non-tokenized keyword field or number field.</p>
+<div class="highlight"><pre><span></span><code>GET INDEX_NAME/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;FIELD_NAME&quot;: &quot;success&quot;
+    }
+  }
+}
+</code></pre></div>
+<p><strong>range</strong></p>
+<div class="highlight"><pre><span></span><code>GET INDEX_NAME/_search
+{
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;FIELD_NAME&quot;: {
+        &quot;gte&quot;: 100,
+        &quot;lte&quot;: 500
+      }
+    }
+  }
+}
+</code></pre></div>
+<p><strong>bool</strong></p>
+<ul>
+<li>must</li>
+<li>should (effect score)</li>
+<li>must_not</li>
+<li>filter</li>
+</ul>
+<div class="highlight"><pre><span></span><code>GET INDEX_NAME/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        { &quot;match&quot;: { &quot;title&quot;: &quot;apple&quot; } }
+      ],
+      &quot;filter&quot;: [
+        { &quot;range&quot;: { &quot;price&quot;: { &quot;lt&quot;: 100 } } }
+      ],
+      &quot;must_not&quot;: [
+        { &quot;term&quot;: { &quot;condition&quot;: &quot;refurbished&quot; } }
+      ]
+    }
+  }
+}
+</code></pre></div>
+<p><strong>sort</strong></p>
+<p>For number/date/keyword</p>
+<div class="highlight"><pre><span></span><code>&quot;sort&quot;: [
+  { &quot;price&quot;: &quot;asc&quot; }
+]
+</code></pre></div>
+<p><strong>size</strong>
+For paging.</p>
+<div class="highlight"><pre><span></span><code>GET INDEX_NAME/_search
+{
+  &quot;size&quot;: 10
+}
+</code></pre></div>
+<h2 id="cat-api">Cat API</h2>
+<h2 id="index-management-api">Index Management API</h2>
 
 
 
